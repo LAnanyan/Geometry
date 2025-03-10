@@ -83,8 +83,6 @@ double Segment3D::squared_distance_to(const Segment3D& other) const
 	const double F = -d1 * r2;
 	const double denom = A * E - B * D;
 
-	double t = 0.;
-	double s = 0.;
 	// NOTE: we will use the squared distances throughout the calculation
 	double min_squared_distance = std::numeric_limits<double>::max();
 
@@ -95,13 +93,12 @@ double Segment3D::squared_distance_to(const Segment3D& other) const
 	// equation to get our first candidate distance:
 	if (std::abs(denom) > std::numeric_limits<double>::epsilon())
 	{
-		t = std::clamp((B * F - C * E) / denom, 0., 1.);
-		s = std::clamp((C * D - A * F) / denom, 0., 1.);
+		const double t = (B * F - C * E) / denom;
+		const double s = (C * D - A * F) / denom;
 
 		if (t >= 0. && t <= 1. && s >= 0. && s <= 1.)
 		{
 			d = (rp11 + r1 * t) - (rp21 + r2 * s);
-
 			min_squared_distance = d * d;
 		}
 	}
